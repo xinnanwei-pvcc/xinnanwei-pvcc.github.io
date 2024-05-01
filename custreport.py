@@ -19,20 +19,20 @@ def main():
     display_cust_report()
 
 def read_in_cust_file():
-    global cust_in_data_block_list
     cust_data_file = open(infile, "r")
-
-    #read ALL the lines in the file into one big list
-    cust_in_data_block_list = cust_data_file.readlines() 
+    
+    #read ALL lines in the file into one big list
+    cust_in_data_block_list = cust_data_file.readlines()
     cust_data_file.close()
 
-    #split the data into a list of individual customer lists
-    for i in cust_in_data_block_list:  
-        cust.append(i.split(","))       
+    #split the data into the fields
+    for i in cust_in_data_block_list:
+        cust.append(i.split(","))
+
 
 def perform_calculations():
     global grand_total
-
+    
     for i in range(len(cust)):
         amt_owed = float(cust[i][2])
         days_late = int(cust[i][3])
@@ -41,27 +41,26 @@ def perform_calculations():
             late_fee = amt_owed * LATE_FEE_RATE
         else:
             late_fee = 0
-
+        
         amt_owed += late_fee
         grand_total += amt_owed
         cust[i][2] = amt_owed
-    
+
 def display_cust_report():
 
     currency = "8,.2f"
-    line = "---------------------------------------------"
+    line = "-----------------------------------"
     tab = "\t"
 
     print(line)
-    print("***** CUSTOMER BALANCE REPORT ******")
-    print(" NAME                  NEW AMOUNT OWED")
+    print("***** CUSTOMER BALANCE REPORT *****")
+    print(" NAME               NEW AMOUNT OWED")
     print(line)
 
     for i in range(len(cust)):
-        print(cust[i][1] + " " + tab + cust[i][0] + tab + format(cust[i][2],currency))
+        print(cust[i][1] + "  " + tab + cust[i][0] + tab + format(cust[i][2],currency))
 
     print(line)
     print("**** GRAND TOTAL:\t$" + format(grand_total, currency))
 
-    
-main()      
+main()    
